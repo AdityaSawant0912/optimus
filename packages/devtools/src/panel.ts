@@ -1,4 +1,4 @@
-import type { FlagsClient } from "@feature-flags/core";
+import type { FlagsClient } from "@optimus/core";
 
 const TAG_NAME = "feature-flags-panel";
 

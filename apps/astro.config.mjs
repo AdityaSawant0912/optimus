@@ -7,17 +7,17 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://yourlib.dev', // TODO: replace with real domain before deploying
+  site: 'https://optimus.dev', // TODO: replace with real domain before deploying
   integrations: [
     starlight({
-      title: 'YourLib',
+      title: 'Optimus',
       // NOTE on the /docs subpath: Starlight no longer exposes a `base`
       // option (removed post-0.39 — see the "Use Starlight at a subpath"
       // guide). The actual mechanism is the extra `docs/` nesting under
       // src/content/docs/docs/ — that folder is what puts every Starlight
       // page at /docs/*, leaving src/pages/index.astro as the real "/".
       social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/you/feature-flags' },
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/AdityaSawant0912/optimus' },
       ],
       // Sidebar is explicit here (rather than autogenerate) so it mirrors the
       // packages/ layout intentionally instead of just mirroring folder order.

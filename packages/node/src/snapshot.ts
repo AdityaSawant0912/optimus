@@ -1,4 +1,4 @@
-import type { EvaluatedFlag } from "@feature-flags/core";
+import type { EvaluatedFlag } from "@optimus/core";
 
 export const SNAPSHOT_VERSION = 1;
 

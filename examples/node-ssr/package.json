@@ -10,8 +10,8 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@feature-flags/core": "workspace:*",
-    "@feature-flags/node": "workspace:*"
+    "@optimus/core": "workspace:*",
+    "@optimus/node": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

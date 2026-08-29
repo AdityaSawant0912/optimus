@@ -1,4 +1,4 @@
-# @feature-flags/devtools
+# @optimus/devtools
 
 Local override resolution and a framework-agnostic debug panel for forcing
 flag values during QA/E2E testing.
@@ -6,13 +6,13 @@ flag values during QA/E2E testing.
 ## Install
 
 ```bash
-npm install @feature-flags/devtools
+npm install @optimus/devtools
 ```
 
 ## Resolving overrides from the environment
 
 ```ts
-import { resolveOverridesFromEnvironment, applyOverridesToClient } from "@feature-flags/devtools";
+import { resolveOverridesFromEnvironment, applyOverridesToClient } from "@optimus/devtools";
 
 const overrides = resolveOverridesFromEnvironment();
 applyOverridesToClient(client, overrides); // client.setOverrides(overrides)
@@ -25,7 +25,7 @@ injected global** — most-ephemeral/most-explicit wins over most-persistent:
   deserializing directly to `Record<string, FlagOverride>`. Not a per-flag
   `?ff.<key>=<value>` shorthand — a shorthand needs a string→`unknown`
   coercion mini-language (is `"true"` a boolean or a string?) that would
-  reintroduce exactly the kind of silent guessing `@feature-flags/node`'s
+  reintroduce exactly the kind of silent guessing `@optimus/node`'s
   `buildContextFromRequest` explicitly refuses to do.
 - **localStorage**: same shape, key `feature-flags:devtools:overrides`.
 - **Injected global**: `window.__FEATURE_FLAGS_OVERRIDES__` — **not**
@@ -50,7 +50,7 @@ analytics.
 ## Debug panel
 
 ```ts
-import { registerFeatureFlagsPanel } from "@feature-flags/devtools";
+import { registerFeatureFlagsPanel } from "@optimus/devtools";
 
 registerFeatureFlagsPanel(); // idempotent
 document.body.innerHTML += "<feature-flags-panel></feature-flags-panel>";
@@ -69,5 +69,5 @@ is what a debug tool warrants, not deep UI polish.
 ## Testing
 
 ```bash
-pnpm --filter @feature-flags/devtools test
+pnpm --filter @optimus/devtools test
 ```

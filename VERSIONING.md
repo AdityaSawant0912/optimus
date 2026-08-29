@@ -9,7 +9,7 @@ are shared across every package.
 
 ## `FlagDefinition` / `FlagRemoteState` / `EvaluationContext`
 
-**Breaking** (major bump for `@feature-flags/core`, and for every package
+**Breaking** (major bump for `@optimus/core`, and for every package
 depending on it that re-exports or consumes the changed field):
 
 - Removing a field.
@@ -47,7 +47,7 @@ treat a minor bump here the same care as a major one.
 ## `FlagKind` deprecation policy
 
 Add-only. A `FlagKind` value is never removed without a major version bump
-across every package that depends on `@feature-flags/core` (since the
+across every package that depends on `@optimus/core` (since the
 adapters don't independently define this type). A deprecated kind gets a
 `@deprecated` JSDoc tag on its `defineXxx` factory (if one exists in
 `kinds.ts`) for at least one minor version before any removal, pointing at

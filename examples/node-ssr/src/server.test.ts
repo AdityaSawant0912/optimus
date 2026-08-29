@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { FlagsClient } from "@feature-flags/core";
-import { buildContextFromRequest, hydrateSnapshot } from "@feature-flags/node";
-import type { RequestLike } from "@feature-flags/node";
+import { FlagsClient } from "@optimus/core";
+import { buildContextFromRequest, hydrateSnapshot } from "@optimus/node";
+import type { RequestLike } from "@optimus/node";
 import { definitions, provider } from "./flags";
 import { contextOptions, startServer } from "./server";
 

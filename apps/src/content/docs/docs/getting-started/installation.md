@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: Install the core evaluation engine — the only package published so far.
+description: Install the core package and the adapter for your framework.
 sidebar:
   order: 1
 ---
@@ -8,26 +8,35 @@ sidebar:
 ## Install core
 
 ```bash
-npm install @feature-flags/core
+npm install @optimus/core
 ```
 
-`@feature-flags/core` is a pure TypeScript evaluation engine with zero
-framework dependencies. It runs identically in Node, the browser, and any
-SSR environment.
+`@optimus/core` is a pure TypeScript evaluation engine with zero framework
+dependencies. It runs identically in Node, the browser, and any SSR
+environment, and is the only required package — every adapter below is a
+thin layer on top of it.
 
-:::caution
-Only `@feature-flags/core` exists right now. The React, Angular, Node/SSR,
-and DevTools adapters described in [Adapters](/docs/adapters/react/overview/)
-are planned but not yet implemented — see each adapter page for status.
-:::
+## Adapters
 
-## Adapters (planned)
-
-Once shipped, the framework adapters will install alongside core, matching
-your framework:
+Install the adapter that matches your framework alongside core:
 
 ```bash
-npm install @feature-flags/react     # React
-npm install @feature-flags/angular   # Angular
-npm install @feature-flags/node      # Node / SSR
+npm install @optimus/react     # React — <FlagProvider>, useFlag, useVariant
+npm install @optimus/angular   # Angular — FeatureFlagService, *ifFeature
+npm install @optimus/node      # Node / SSR — request context + snapshot hydration
 ```
+
+## DevTools (optional)
+
+```bash
+npm install @optimus/devtools --save-dev
+```
+
+Local override resolution (query param / `localStorage` / injected global)
+and a framework-agnostic debug panel, for forcing flag values during QA/E2E
+testing. See the [DevTools adapter](/docs/adapters/devtools/overview/) page.
+
+## Next
+
+[Quick Start](/docs/getting-started/quick-start/) walks through defining and
+evaluating your first flag.

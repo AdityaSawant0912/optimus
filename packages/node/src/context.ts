@@ -1,4 +1,4 @@
-import type { EvaluationContext } from "@feature-flags/core";
+import type { EvaluationContext } from "@optimus/core";
 
 export type NodeHeaderValue = string | string[] | undefined;
 

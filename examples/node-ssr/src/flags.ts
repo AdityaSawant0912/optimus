@@ -1,5 +1,5 @@
-import { LocalProvider } from "@feature-flags/core";
-import type { FlagDefinition, FlagRemoteState } from "@feature-flags/core";
+import { LocalProvider } from "@optimus/core";
+import type { FlagDefinition, FlagRemoteState } from "@optimus/core";
 
 /** Deterministic sanity-check flag: remote state pins it on regardless of context. */
 export const showBanner: FlagDefinition<boolean> = {

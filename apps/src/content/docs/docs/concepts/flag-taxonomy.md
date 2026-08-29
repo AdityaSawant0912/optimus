@@ -23,19 +23,32 @@ These fields live directly on `FlagDefinition` and `FlagRemoteState`:
 
 | Field            | Source              | What it does                                                              |
 | ---------------- | ------------------- | -------------------------------------------------------------------------- |
-| `failureMode`  | definition           | `'closed' \| 'open' \| 'lastKnown'` — outcome when remote state is missing |
+| `failureMode`  | definition           | `'closed' \| 'open' \| 'lastKnown'` — outcome when the provider fails to fetch remote state |
 | `rolloutPercentage` | remote state    | Percentage-based bucketing, see [Bucketing](/docs/concepts/bucketing/)    |
 | `targetingRules`  | remote state      | Attribute/rule-based matching (`TargetingRule[]`)                        |
 | `sticky`        | definition           | Whether the same bucketing key always resolves the same way              |
-| `emitsExposure` | definition           | Intended for A/B tests to fire exposure events; not yet wired to any event emitter in `core` |
+| `emitsExposure` | definition           | Fires every subscribed `onEvaluate` handler on `FlagsClient` whenever a flagged requested read resolves |
 | `schedule`      | definition           | Optional `{ startAt?, endAt? }` time window                              |
 | `dependsOn`     | definition           | Parent flag key(s) — this flag only evaluates if every parent is truthy  |
 
-`failureMode` is declared on every `FlagDefinition` but `core` currently only
-implements the `'closed'` behavior: if remote state doesn't set a field, the
-code-defined default is used. This *is* the kill-switch fail-safe path —
-there's no separate error-handling branch. `'open'` and `'lastKnown'` are
-part of the type but not yet given distinct evaluation semantics.
+`failureMode` is enforced by `FlagsClient`, not the pure `evaluate()`
+function — a bare `evaluate()` call always uses whatever remote state you
+hand it, with no provider-failure concept to react to. When a
+`FlagsClient`-owned provider fetch fails:
+
+- **`'closed'`** (the default): falls back to the definition's
+  `defaultValue`, `reason: 'fallbackError'`.
+- **`'open'`**: a `boolean`-shaped flag fails open (`value: true`) instead
+  of falling back to `defaultValue` — useful for flags that gate a
+  fail-safe (e.g. "allow legacy checkout") rather than a new feature.
+- **`'lastKnown'`**: if a previous successful fetch is cached, re-evaluates
+  against that stale remote state (`stale: true`) instead of falling back.
+
+`emitsExposure` is wired to `FlagsClient.onEvaluate()`: every handler
+registered there fires on a requested (not `dependsOn`-internal) read of a
+flag with `emitsExposure: true`. Overridden reads (via `setOverrides()`)
+never fire exposure handlers, since a forced test read isn't a real user
+exposure.
 
 ## `kind`
 
@@ -48,13 +61,22 @@ type FlagKind =
   | "dynamicConfig" | "custom";
 ```
 
-`kind` is currently a plain string field you set yourself when constructing
-a `FlagDefinition` — it's metadata for your own bookkeeping/tooling, not
-something `evaluate()` branches on.
+`kind` is a plain string field — it's metadata for your own
+bookkeeping/tooling, not something `evaluate()` branches on itself.
 
-:::note
-Factory helpers like `defineKillSwitch(...)` or `defineExperiment(...)` that
-pre-fill trait defaults for a given `kind` are planned (see PLAN.md §3.3,
-§11 Phase 6) but not implemented yet. Build a `FlagDefinition` object
-directly for now — see [Quick Start](/docs/getting-started/quick-start/).
-:::
+## Kind-sugar factories
+
+`@optimus/core` ships 8 factory functions — `defineKillSwitch`,
+`defineExperiment`, and others — that pre-fill trait defaults for a given
+`kind` over the same `FlagDefinition` shape, rather than a separate
+evaluation code path per kind:
+
+```ts
+import { defineKillSwitch, defineExperiment } from '@optimus/core';
+
+const maintenanceMode = defineKillSwitch({ key: 'maintenance-mode', defaultValue: false });
+```
+
+Building a `FlagDefinition` object directly (see
+[Quick Start](/docs/getting-started/quick-start/)) still works identically
+— the factories are convenience, not a different code path.

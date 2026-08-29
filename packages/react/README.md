@@ -1,11 +1,11 @@
-# @feature-flags/react
+# @optimus/react
 
 React adapter: `<FlagProvider>`, `useFlag`, `useVariant`.
 
 ## Install
 
 ```bash
-npm install @feature-flags/react
+npm install @optimus/react
 ```
 
 Peer dependency: `react@^18.0.0 || ^19.0.0` (floor of 18 because
@@ -14,7 +14,7 @@ Peer dependency: `react@^18.0.0 || ^19.0.0` (floor of 18 because
 ## Usage
 
 ```tsx
-import { FlagProvider, useFlag } from "@feature-flags/react";
+import { FlagProvider, useFlag } from "@optimus/react";
 
 function App({ client, snapshot }) {
   return (
@@ -30,7 +30,7 @@ function Banner() {
 }
 ```
 
-`client` is a `FlagsClient` from `@feature-flags/core`, constructed and
+`client` is a `FlagsClient` from `@optimus/core`, constructed and
 owned entirely by your app — `<FlagProvider>` never calls
 `client.init()`/`client.dispose()`. React StrictMode's double-effect-invoke
 in dev would break a shared client on the second mount if it did; a client
@@ -38,7 +38,7 @@ is also typically one-per-app, not scoped to one component subtree.
 
 ## Snapshot vs. live mode
 
-Passing `snapshot` (a `SerializedSnapshot` from `@feature-flags/node`)
+Passing `snapshot` (a `SerializedSnapshot` from `@optimus/node`)
 puts the provider in **snapshot mode**: `useFlag` reads only from the
 hydrated snapshot, with zero calls to `client.evaluate()`/`evaluateAll()`
 — the literal, testable expression of the "server evaluates once, client
@@ -70,5 +70,5 @@ with no bucketing key resolvable). That's a normal state, not a bug.
 ## Testing
 
 ```bash
-pnpm --filter @feature-flags/react test
+pnpm --filter @optimus/react test
 ```

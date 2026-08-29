@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { FlagsClient, LocalProvider } from "@feature-flags/core";
-import type { FlagDefinition } from "@feature-flags/core";
-import { serializeSnapshot } from "@feature-flags/node";
+import { FlagsClient, LocalProvider } from "@optimus/core";
+import type { FlagDefinition } from "@optimus/core";
+import { serializeSnapshot } from "@optimus/node";
 import { FlagProvider } from "./FlagProvider";
 import { useFlag } from "./useFlag";
 

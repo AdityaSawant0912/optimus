@@ -1,6 +1,6 @@
 # docs-site
 
-Marketing homepage (`/`) + Starlight docs (`/docs`) for YourLib, built with Astro.
+Marketing homepage (`/`) + Starlight docs (`/docs`) for Optimus, built with Astro.
 
 ## Structure
 

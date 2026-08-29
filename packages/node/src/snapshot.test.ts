@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { SNAPSHOT_VERSION, hydrateSnapshot, serializeSnapshot } from "./snapshot";
-import type { EvaluatedFlag } from "@feature-flags/core";
+import type { EvaluatedFlag } from "@optimus/core";
 
 function fixture(): Record<string, EvaluatedFlag<unknown>> {
   return {

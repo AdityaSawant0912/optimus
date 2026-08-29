@@ -93,7 +93,7 @@ pnpm install
 pnpm test
 
 # run tests for a single package
-pnpm --filter @feature-flags/core test
+pnpm --filter @optimus/core test
 
 # typecheck everything
 pnpm typecheck

@@ -1,11 +1,11 @@
-# @feature-flags/angular
+# @optimus/angular
 
 Angular adapter: `FeatureFlagService`, `provideFeatureFlags`, `*ifFeature`.
 
 ## Install
 
 ```bash
-npm install @feature-flags/angular
+npm install @optimus/angular
 ```
 
 Peer dependencies: `@angular/core`/`@angular/common@^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0`,
@@ -17,7 +17,7 @@ status in Angular 19.
 
 ```ts
 import { bootstrapApplication } from "@angular/platform-browser";
-import { provideFeatureFlags } from "@feature-flags/angular";
+import { provideFeatureFlags } from "@optimus/angular";
 
 bootstrapApplication(AppComponent, {
   providers: [provideFeatureFlags(client, snapshot)],
@@ -26,7 +26,7 @@ bootstrapApplication(AppComponent, {
 
 ```ts
 import { Component, inject } from "@angular/core";
-import { FeatureFlagService, IfFeatureDirective } from "@feature-flags/angular";
+import { FeatureFlagService, IfFeatureDirective } from "@optimus/angular";
 
 @Component({
   standalone: true,
@@ -62,9 +62,9 @@ React StrictMode's dev-only double-invoke).
 ## Running tests
 
 ```bash
-pnpm --filter @feature-flags/core build
-pnpm --filter @feature-flags/node build
-pnpm --filter @feature-flags/angular test
+pnpm --filter @optimus/core build
+pnpm --filter @optimus/node build
+pnpm --filter @optimus/angular test
 ```
 
 The two `build` steps are required — see "Why a custom webpack config"
@@ -79,12 +79,12 @@ workspace package. Every other package in this monorepo (`core`, `node`,
 `react`) is consumed via `"main": "./src/index.ts"` (raw TypeScript), which
 works fine under Vite/Vitest (which transforms `.ts` on the fly regardless
 of location) but silently breaks under Angular's classic webpack test
-pipeline — imports like `@feature-flags/core` resolved to an unusable
+pipeline — imports like `@optimus/core` resolved to an unusable
 module object at runtime (`LocalProvider is not a constructor`), because
 the underlying TS file was never actually compiled.
 
 **Fix:** `extra-webpack.config.cjs` adds a webpack `resolve.alias` pointing
-`@feature-flags/core`/`@feature-flags/node` at their **built** `dist/`
+`@optimus/core`/`@optimus/node` at their **built** `dist/`
 output instead of raw source, wired in via
 `@angular-builders/custom-webpack:karma` (see `angular.json`'s `test`
 target). Hence the `build` steps above must run first.

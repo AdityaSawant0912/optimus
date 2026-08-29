@@ -1,4 +1,4 @@
-import type { EvaluationContext } from "@feature-flags/core";
+import type { EvaluationContext } from "@optimus/core";
 
 function attributesEqual(
   a: EvaluationContext["attributes"],

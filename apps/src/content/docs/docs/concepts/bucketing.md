@@ -1,12 +1,12 @@
 ---
 title: Bucketing & Salting
-description: How YourLib deterministically buckets users into flag variants and rollout percentages.
+description: How Optimus deterministically buckets users into flag variants and rollout percentages.
 sidebar:
   order: 2
 ---
 
 Percentage rollouts and A/B variant assignment both go through the same
-bucketing primitives in `@feature-flags/core`.
+bucketing primitives in `@optimus/core`.
 
 ## Resolving the bucketing key
 

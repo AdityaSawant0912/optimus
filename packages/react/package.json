@@ -1,5 +1,5 @@
 {
-  "name": "@feature-flags/react",
+  "name": "@optimus/react",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -11,8 +11,8 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@feature-flags/core": "workspace:*",
-    "@feature-flags/node": "workspace:*"
+    "@optimus/core": "workspace:*",
+    "@optimus/node": "workspace:*"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0"

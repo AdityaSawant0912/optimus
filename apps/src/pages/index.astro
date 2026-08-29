@@ -3,9 +3,9 @@ import BucketDemo from '../components/BucketDemo.tsx';
 import '../styles/global.css';
 
 const adapters = [
-  { name: 'React', pkg: '@yourlib/react' },
-  { name: 'Angular', pkg: '@yourlib/angular' },
-  { name: 'Node / SSR', pkg: '@yourlib/node' },
+  { name: 'React', pkg: '@optimus/react' },
+  { name: 'Angular', pkg: '@optimus/angular' },
+  { name: 'Node / SSR', pkg: '@optimus/node' },
 ];
 
 const flags = [
@@ -27,7 +27,7 @@ const flags = [
   {
     state: 'on' as const,
     title: 'Zero framework deps in core',
-    body: '@yourlib/core never imports React, Angular, or window. Run it in a Worker, a Node server, or a browser — same engine, same result.',
+    body: '@optimus/core never imports React, Angular, or window. Run it in a Worker, a Node server, or a browser — same engine, same result.',
   },
 ];
 ---
@@ -36,7 +36,7 @@ const flags = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>YourLib — TypeScript feature flags that don't fight your stack</title>
+    <title>Optimus — TypeScript feature flags that don't fight your stack</title>
     <meta
       name="description"
       content="A zero-dependency feature flag engine for TypeScript, with first-class React, Angular, and SSR adapters."
@@ -59,7 +59,7 @@ const flags = [
             style="background: var(--color-signal-amber);"
             aria-hidden
           ></span>
-          YourLib
+          Optimus
         </a>
         <nav class="flex items-center gap-6 text-sm text-[var(--color-muted)]">
           <a href="/docs/" class="transition hover:text-[var(--color-paper)]">Docs</a>
@@ -67,7 +67,7 @@ const flags = [
             >Quick Start</a
           >
           <a
-            href="https://github.com/you/feature-flags"
+            href="https://github.com/AdityaSawant0912/optimus"
             class="rounded border border-[var(--color-line)] px-3 py-1.5 text-[var(--color-paper)] transition hover:border-[var(--color-signal-indigo)]"
             >GitHub</a
           >
@@ -100,7 +100,7 @@ const flags = [
               Get started
             </a>
             <code class="rounded border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 font-[var(--font-mono)] text-sm text-[var(--color-muted)]">
-              npm install @yourlib/core
+              npm install @optimus/core
             </code>
           </div>
         </div>
@@ -163,10 +163,10 @@ const flags = [
 
     <footer class="border-t border-[var(--color-line)]">
       <div class="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-6 py-10 text-sm text-[var(--color-muted)] sm:flex-row sm:items-center">
-        <p>YourLib — MIT licensed.</p>
+        <p>Optimus — MIT licensed.</p>
         <div class="flex gap-6">
           <a href="/docs/" class="transition hover:text-[var(--color-paper)]">Documentation</a>
-          <a href="https://github.com/you/feature-flags" class="transition hover:text-[var(--color-paper)]">GitHub</a>
+          <a href="https://github.com/AdityaSawant0912/optimus" class="transition hover:text-[var(--color-paper)]">GitHub</a>
         </div>
       </div>
     </footer>

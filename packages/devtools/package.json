@@ -1,5 +1,5 @@
 {
-  "name": "@feature-flags/devtools",
+  "name": "@optimus/devtools",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -11,7 +11,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@feature-flags/core": "workspace:*"
+    "@optimus/core": "workspace:*"
   },
   "devDependencies": {
     "jsdom": "^25.0.1",

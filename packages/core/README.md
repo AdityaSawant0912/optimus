@@ -1,15 +1,15 @@
-# @feature-flags/core
+# @optimus/core
 
 Pure, framework-free feature-flag evaluation engine. No React, no Angular,
 no `window`/`localStorage` — this package runs identically in Node, the
-browser, or an edge worker. Framework adapters (`@feature-flags/react`,
-`@feature-flags/angular`) and Node/SSR helpers (`@feature-flags/node`) are
+browser, or an edge worker. Framework adapters (`@optimus/react`,
+`@optimus/angular`) and Node/SSR helpers (`@optimus/node`) are
 thin layers on top of this one.
 
 ## Install
 
 ```bash
-npm install @feature-flags/core
+npm install @optimus/core
 ```
 
 ## Flags are 3 primitives + composable traits
@@ -29,7 +29,7 @@ functions (`defineKillSwitch`, `defineExperiment`, ...) that are just
 pre-filled trait bundles over the same `FlagDefinition` shape:
 
 ```ts
-import { defineKillSwitch, defineExperiment } from "@feature-flags/core";
+import { defineKillSwitch, defineExperiment } from "@optimus/core";
 
 const maintenanceMode = defineKillSwitch({ key: "maintenance-mode", defaultValue: false });
 
@@ -47,10 +47,10 @@ const checkoutExperiment = defineExperiment({
 
 `evaluate()` is pure and deterministic: identical `(definition, remoteState,
 context)` always produces an identical `EvaluatedFlag`. This is what makes
-SSR snapshot/hydrate parity possible (see `@feature-flags/node`).
+SSR snapshot/hydrate parity possible (see `@optimus/node`).
 
 ```ts
-import { evaluate } from "@feature-flags/core";
+import { evaluate } from "@optimus/core";
 
 const result = evaluate(maintenanceMode, undefined, { userId: "user_123" });
 // { key: "maintenance-mode", value: false, reason: "default", stale: false }
@@ -61,7 +61,7 @@ fetching, caching, `dependsOn` resolution across multiple flags, live
 updates — use `FlagsClient` instead of calling `evaluate()` directly:
 
 ```ts
-import { FlagsClient, LocalProvider } from "@feature-flags/core";
+import { FlagsClient, LocalProvider } from "@optimus/core";
 
 const client = new FlagsClient({
   definitions: [maintenanceMode, checkoutExperiment],
@@ -76,7 +76,7 @@ client.evaluateAll({ userId: "user_123" });
 `FlagsClient` also owns `failureMode` semantics (`closed`/`open`/
 `lastKnown`), `subscribe()` for live-update notification, and
 `setOverrides()`/`clearOverrides()` for forcing a flag's value regardless
-of everything else (used by `@feature-flags/devtools`, but callable
+of everything else (used by `@optimus/devtools`, but callable
 directly too — see its doc comment in `client.ts` for the exact
 short-circuit semantics).
 
@@ -106,7 +106,7 @@ assignments across different flags independent. Both are pure integer
 operations, deterministic across Node and browser V8.
 
 ```ts
-import { computeBucket, isInRollout } from "@feature-flags/core";
+import { computeBucket, isInRollout } from "@optimus/core";
 
 const bucket = computeBucket("user_123", "checkout-v2"); // [0, 10000)
 isInRollout(bucket, 25); // true for ~25% of users
@@ -144,7 +144,7 @@ and new code path during a migration — decoupled from `FlagDefinition`/
 `FlagsClient` so `evaluate()` stays pure:
 
 ```ts
-import { runShadow } from "@feature-flags/core";
+import { runShadow } from "@optimus/core";
 
 const migrationFlag = client.evaluate<boolean>("checkout-v2-migration");
 const result = migrationFlag.value
@@ -162,5 +162,5 @@ caught and reported via `onResult`, never propagated.
 ## Testing
 
 ```bash
-pnpm --filter @feature-flags/core test
+pnpm --filter @optimus/core test
 ```
