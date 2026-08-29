@@ -1,5 +1,5 @@
 {
-  "name": "feature-flags",
+  "name": "optimus",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.24.0",
