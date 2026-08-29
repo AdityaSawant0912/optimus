@@ -162,6 +162,7 @@ export class FlagsClient {
 
   private readonly evaluateHandlers = new Set<OnEvaluateHandler>();
   private readonly updateListeners = new Set<ClientUpdateListener>();
+  private readonly overrides = new Map<string, FlagOverride>();
 
   constructor(options: FlagsClientOptions) {
     this.byKey = new Map(options.definitions.map((d) => [d.key, d]));
@@ -264,16 +265,27 @@ export class FlagsClient {
     return () => this.updateListeners.delete(listener);
   }
 
-  /** Reserved seam for a future devtools package. No-op in this phase: the
-   *  signature is locked so devtools can integrate later without a client
-   *  rewrite, but calling it does not change any evaluate() output yet. */
+  /**
+   * Forces a flag's resolved value/variantKey regardless of failureMode,
+   * dependsOn, targeting, or remote state — reason is always "override".
+   * Merges into any existing overrides rather than replacing them, so a
+   * devtools panel with independent per-row controls doesn't have to resend
+   * every other active override each time one changes. Unknown keys are
+   * silently inert. Overridden reads never fire onEvaluate exposure
+   * handlers, even when emitsExposure is true — a forced test read is not a
+   * real user exposure and must not pollute experiment analytics.
+   */
   setOverrides(overrides: Record<string, FlagOverride>): void {
-    void overrides; // ponytail: intentional no-op, wired up when devtools lands
+    const keys = Object.keys(overrides);
+    for (const key of keys) this.overrides.set(key, overrides[key]!);
+    this.notifySubscribers(keys);
   }
 
-  /** See setOverrides — reserved, no-op in this phase. */
+  /** Clears specific overrides, or all of them when `keys` is omitted. */
   clearOverrides(keys?: string[]): void {
-    void keys; // ponytail: intentional no-op, wired up when devtools lands
+    const targetKeys = keys ?? [...this.overrides.keys()];
+    for (const key of targetKeys) this.overrides.delete(key);
+    this.notifySubscribers(targetKeys);
   }
 
   dispose(): void {
@@ -293,6 +305,12 @@ export class FlagsClient {
     isRequested: boolean,
   ): EvaluatedFlag<T> {
     const definition = this.byKey.get(key) as FlagDefinition<T>;
+
+    const override = this.overrides.get(key);
+    if (override) {
+      return { key, value: override.value as T, variantKey: override.variantKey, reason: "override", stale: false };
+    }
+
     const entry = this.cache.get(key);
     const result = resolveFlag<T>(definition, entry, context, dependencies);
 

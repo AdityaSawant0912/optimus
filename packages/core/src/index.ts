@@ -35,3 +35,21 @@ export { HttpPollingProvider } from "./providers/http-polling";
 export type { HttpPollingProviderOptions } from "./providers/http-polling";
 export { SseProvider } from "./providers/sse";
 export type { SseProviderOptions } from "./providers/sse";
+export {
+  defineReleaseFlag,
+  defineKillSwitch,
+  defineExperiment,
+  defineMigrationFlag,
+  defineProgressiveDeploy,
+  defineEntitlementFlag,
+  defineCircuitBreaker,
+  defineDynamicConfig,
+} from "./kinds";
+export type {
+  CommonFlagOptions,
+  DefineBooleanFlagOptions,
+  DefineExperimentOptions,
+  DefineDynamicConfigOptions,
+} from "./kinds";
+export { runShadow, runShadowAsync, deepEqual } from "./shadow";
+export type { ShadowResult, ShadowResultHandler } from "./shadow";

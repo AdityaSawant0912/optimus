@@ -288,19 +288,143 @@ describe("FlagsClient — subscribe / dispose", () => {
   });
 });
 
-describe("FlagsClient — setOverrides/clearOverrides", () => {
-  it("are true no-ops in this phase", async () => {
+describe("FlagsClient — overrides", () => {
+  it("forces a boolean flag's value even when remote state says otherwise", async () => {
     const flag = boolFlag({ key: "flag" });
-    const provider = new ScriptedProvider({ steps: [{ state: [state("flag", true)] }] });
+    const provider = new ScriptedProvider({ steps: [{ state: [state("flag", false)] }] });
     const client = new FlagsClient({ definitions: [flag], provider });
     await client.init();
 
-    const before = client.evaluate("flag");
-    client.setOverrides({ flag: { value: false } });
-    expect(client.evaluate("flag")).toEqual(before);
+    client.setOverrides({ flag: { value: true } });
 
-    client.clearOverrides(["flag"]);
-    expect(client.evaluate("flag")).toEqual(before);
+    expect(client.evaluate("flag")).toEqual({ key: "flag", value: true, variantKey: undefined, reason: "override", stale: false });
+  });
+
+  it("forces an arbitrary variantKey/value not present in the real variant list", async () => {
+    const experiment: FlagDefinition<string> = {
+      key: "experiment",
+      kind: "experiment",
+      valueType: "variant",
+      defaultValue: "control",
+      variants: [
+        { key: "control", value: "control", weight: 50 },
+        { key: "treatment", value: "treatment", weight: 50 },
+      ],
+      failureMode: "closed",
+      sticky: true,
+      emitsExposure: true,
+    };
+    const provider = new ScriptedProvider({ steps: [{ state: [] }] });
+    const client = new FlagsClient({ definitions: [experiment], provider });
+    await client.init();
+
+    client.setOverrides({ experiment: { value: "not-a-real-variant", variantKey: "forced" } });
+
+    expect(client.evaluate("experiment")).toMatchObject({ value: "not-a-real-variant", variantKey: "forced", reason: "override" });
+  });
+
+  it("bypasses failureMode entirely, even when the provider is totally broken", async () => {
+    const flag = boolFlag({ key: "flag", failureMode: "closed" });
+    const provider = new ScriptedProvider({ steps: [{ throws: new Error("down from the start") }] });
+    const client = new FlagsClient({ definitions: [flag], provider });
+    await client.init(); // failed refresh() inside init(), no cache ever
+
+    client.setOverrides({ flag: { value: true } });
+
+    expect(client.evaluate("flag")).toMatchObject({ value: true, reason: "override" });
+  });
+
+  it("bypasses dependsOn entirely", async () => {
+    const parent = boolFlag({ key: "parent" });
+    const child = boolFlag({ key: "child", dependsOn: ["parent"] });
+    const provider = new ScriptedProvider({ steps: [{ state: [state("parent", false)] }] });
+    const client = new FlagsClient({ definitions: [parent, child], provider });
+    await client.init();
+
+    expect(client.evaluate("child").reason).toBe("dependencyNotMet");
+
+    client.setOverrides({ child: { value: true } });
+    expect(client.evaluate("child")).toMatchObject({ value: true, reason: "override" });
+  });
+
+  it("clearOverrides(keys) restores real evaluation for only the cleared key", async () => {
+    const a = boolFlag({ key: "a" });
+    const b = boolFlag({ key: "b" });
+    // No remote state for either key — un-overridden evaluation should fall
+    // through cleanly to defaultValue/"default", not an engine-level
+    // enabled:false "override" (a separate, pre-existing reason source).
+    const provider = new ScriptedProvider({ steps: [{ state: [] }] });
+    const client = new FlagsClient({ definitions: [a, b], provider });
+    await client.init();
+
+    client.setOverrides({ a: { value: true }, b: { value: true } });
+    client.clearOverrides(["a"]);
+
+    expect(client.evaluate("a")).toMatchObject({ value: false, reason: "default" });
+    expect(client.evaluate("b")).toMatchObject({ value: true, reason: "override" });
+  });
+
+  it("clearOverrides() with no args clears everything", async () => {
+    const a = boolFlag({ key: "a" });
+    const provider = new ScriptedProvider({ steps: [{ state: [] }] });
+    const client = new FlagsClient({ definitions: [a], provider });
+    await client.init();
+
+    client.setOverrides({ a: { value: true } });
+    client.clearOverrides();
+
+    expect(client.evaluate("a")).toMatchObject({ value: false, reason: "default" });
+  });
+
+  it("does not fire onEvaluate for an overridden read, even when emitsExposure is true", async () => {
+    const flag = boolFlag({ key: "flag", emitsExposure: true });
+    const provider = new ScriptedProvider({ steps: [{ state: [state("flag", false)] }] });
+    const handler = vi.fn();
+    const client = new FlagsClient({ definitions: [flag], provider, onEvaluate: handler });
+    await client.init();
+    handler.mockClear(); // discard the init()-triggered evaluate, if any
+
+    client.setOverrides({ flag: { value: true } });
+    client.evaluate("flag");
+
+    expect(handler).not.toHaveBeenCalled();
+  });
+
+  it("notifies subscribe() listeners with the affected keys", async () => {
+    const flag = boolFlag({ key: "flag" });
+    const provider = new ScriptedProvider({ steps: [{ state: [state("flag", false)] }] });
+    const client = new FlagsClient({ definitions: [flag], provider });
+    await client.init();
+
+    const listener = vi.fn();
+    client.subscribe(listener);
+    client.setOverrides({ flag: { value: true } });
+
+    expect(listener).toHaveBeenCalledWith(["flag"]);
+  });
+
+  it("an override for an unregistered key is silently inert", async () => {
+    const flag = boolFlag({ key: "flag" });
+    const provider = new ScriptedProvider({ steps: [{ state: [state("flag", false)] }] });
+    const client = new FlagsClient({ definitions: [flag], provider });
+    await client.init();
+
+    expect(() => client.setOverrides({ "does-not-exist": { value: true } })).not.toThrow();
+    expect(client.evaluate("flag")).toMatchObject({ value: false });
+  });
+
+  it("merges into existing overrides rather than replacing them", async () => {
+    const a = boolFlag({ key: "a" });
+    const b = boolFlag({ key: "b" });
+    const provider = new ScriptedProvider({ steps: [{ state: [state("a", false), state("b", false)] }] });
+    const client = new FlagsClient({ definitions: [a, b], provider });
+    await client.init();
+
+    client.setOverrides({ a: { value: true } });
+    client.setOverrides({ b: { value: true } });
+
+    expect(client.evaluate("a")).toMatchObject({ value: true, reason: "override" });
+    expect(client.evaluate("b")).toMatchObject({ value: true, reason: "override" });
   });
 });
 
