@@ -1,18 +1,22 @@
 {
   "name": "@useoptimus/angular",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "ng test --no-watch --no-progress",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.spec.json",
-    "build": "ng-packagr -p ng-package.json"
+    "build": "ng-packagr -p ng-package.json",
+    "postbuild": "node -e \"const fs=require('fs');const p='dist/package.json';const j=JSON.parse(fs.readFileSync(p,'utf8'));j.main=j.module;j.types=j.typings;fs.writeFileSync(p,JSON.stringify(j,null,2)+'\\n');\""
   },
   "dependencies": {
     "@useoptimus/core": "workspace:*",
-    "@useoptimus/node": "workspace:*"
+    "@useoptimus/node": "workspace:*",
+    "tslib": "^2.3.0"
   },
   "peerDependencies": {
     "@angular/core": "^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0",
@@ -38,7 +42,7 @@
     "ng-packagr": "^22.0.0",
     "puppeteer": "^23.0.0",
     "rxjs": "^7.8.1",
-    "typescript": "^5.6.3",
+    "typescript": "^6.0.2",
     "zone.js": "^0.15.0"
   }
 }

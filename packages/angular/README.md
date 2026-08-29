@@ -99,30 +99,47 @@ You'll see a deprecation notice for `@angular-devkit/build-angular:karma`
 webpack-style `resolve.alias`, so it can't apply this fix; staying on the
 webpack-based builder is intentional here, not an oversight.
 
-## `pnpm build` (ng-packagr) currently fails — known, external
+## Publishing (`ng-packagr`)
 
-`packages/angular`'s own `build` script (`ng-packagr -p ng-package.json`,
-for the eventual npm-publish path — see the package layout note in the
-root `CLAUDE.md`) currently fails:
+`packages/angular`'s own `build` script runs `ng-packagr -p ng-package.json`,
+which is a **separate build path** from every other package here: it
+produces a self-contained `dist/` with its own generated `package.json`
+(FESM bundle + `.d.ts` + `exports` map), not a straight `tsc` mirror of
+`src/`. Publish this package **from `dist/`**, not from the package root:
+
+```bash
+pnpm --filter @useoptimus/angular build
+cd packages/angular/dist
+npm publish
+```
+
+`allowedNonPeerDependencies` in `ng-package.json` explicitly allowlists
+`@useoptimus/core`/`@useoptimus/node` — `ng-packagr` refuses to ship a
+non-peer dependency it hasn't been told is intentional, to catch a
+framework peer (e.g. `@angular/core`) accidentally left as a regular
+dependency. A `postbuild` script patches the generated `dist/package.json`'s
+`main`/`types` to point at the real bundle/typings paths (`ng-packagr`
+otherwise copies the source package.json's `"./src/index.ts"` values
+verbatim into a directory that has no `src/`, which is harmless for
+`exports`-aware resolvers but a broken fallback for anything that isn't).
+
+### The TypeScript version gate — now resolved
+
+This previously failed outright:
 
 ```
 The Angular Compiler requires TypeScript >=6.0.0 and <6.1.0 but 5.9.3 was found instead.
 ```
 
-This is a real upstream gap, not a local misconfiguration: TypeScript has
-no stable release in the `>=6.0.0 <6.1.0` window at all — it went straight
-from the 5.x line to `7.0.0` stable, with `6.0.0` only ever published as a
-`-beta`/nightly-dev prerelease. Bumping this package's `typescript`
-devDependency can't fix it; there's no compatible stable version to bump
-*to* until either Angular's `ng-packagr`/`compiler-cli` widen that range or
-a compatible TS release ships. This does not block anything else in the
-workspace: `ng-packagr`'s output is only needed for a real `npm publish` of
-this package (all packages here are still `private: true`), and every
-workspace-internal consumer (this package's own tests, a future
-`examples/angular-app`) uses raw TS source via `"main": "./src/index.ts"`,
-the same as every other package — CI runs `tsc`-based builds for
-`core`/`node`/`react`/`devtools`/`node-ssr-example` and skips `pnpm build`'s
-angular step accordingly (see `.github/workflows/ci.yml`).
+At the time, TypeScript had no stable release in that window — it had
+jumped straight from the 5.x line towards `7.0.0`, with `6.0.0` published
+only as a `-beta`/nightly-dev prerelease. TypeScript later backfilled
+stable `6.0.x` point releases, landing inside Angular's required range.
+This package's `typescript` devDependency is pinned to `^6.0.2` — separate
+from the rest of the workspace, which stays on `^5.6.3` — since a pnpm
+workspace resolves each package's own declared range independently.
+`tslib` was also added as a real dependency: Angular's decorator-metadata
+emit requires it, and `ng-packagr` fails the build (`TS2354`) without it.
 
 ## Jasmine vs. vitest gotcha
 
