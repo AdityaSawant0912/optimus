@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+/*
+  Design language: maritime/aviation signal flags — the literal origin of the
+  term "feature flag." Bold, flat color blocks; no gradients; geometric
+  display type; monospace for anything that represents a literal value.
+*/
+@theme {
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-ink: #0f1115;         /* base background — blue-tinted near-black */
+  --color-panel: #161922;       /* raised surface */
+  --color-line: #2a2e37;        /* hairline borders */
+  --color-paper: #e8e6e1;       /* primary text — warm off-white, not pure white */
+  --color-muted: #8b909c;       /* secondary text */
+
+  --color-signal-amber: #ffb627; /* "flag raised" / attention */
+  --color-signal-teal: #3ecf8e;  /* flag ON / true */
+  --color-signal-rose: #ef6461;  /* flag OFF / false, used sparingly */
+  --color-signal-indigo: #6c7bff; /* links, secondary accent */
+}
+
+html {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+}

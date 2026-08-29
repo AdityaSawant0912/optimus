@@ -1,0 +1,174 @@
+---
+import BucketDemo from '../components/BucketDemo.tsx';
+import '../styles/global.css';
+
+const adapters = [
+  { name: 'React', pkg: '@yourlib/react' },
+  { name: 'Angular', pkg: '@yourlib/angular' },
+  { name: 'Node / SSR', pkg: '@yourlib/node' },
+];
+
+const flags = [
+  {
+    state: 'on' as const,
+    title: 'Three primitives, not eight engines',
+    body: 'Boolean, variant, and value flags share one evaluation path. Kill switches, A/B tests, and dynamic config are just presets over the same core.',
+  },
+  {
+    state: 'on' as const,
+    title: 'SSR without double evaluation',
+    body: 'The server evaluates once and serializes a snapshot. The client hydrates from it — no re-run on mount, no flicker.',
+  },
+  {
+    state: 'off' as const,
+    title: 'No hidden salting responsibility',
+    body: "Bucketing keys are yours to configure; the salt composition (id:flag:seed) is the library's job, always. You can't forget it.",
+  },
+  {
+    state: 'on' as const,
+    title: 'Zero framework deps in core',
+    body: '@yourlib/core never imports React, Angular, or window. Run it in a Worker, a Node server, or a browser — same engine, same result.',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YourLib — TypeScript feature flags that don't fight your stack</title>
+    <meta
+      name="description"
+      content="A zero-dependency feature flag engine for TypeScript, with first-class React, Angular, and SSR adapters."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen bg-[var(--color-ink)] text-[var(--color-paper)] antialiased">
+    <!-- top bar -->
+    <header class="border-b border-[var(--color-line)]">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a href="/" class="flex items-center gap-2 font-[var(--font-display)] font-bold tracking-tight">
+          <span
+            class="inline-block h-3 w-5 rounded-[1px]"
+            style="background: var(--color-signal-amber);"
+            aria-hidden
+          ></span>
+          YourLib
+        </a>
+        <nav class="flex items-center gap-6 text-sm text-[var(--color-muted)]">
+          <a href="/docs/" class="transition hover:text-[var(--color-paper)]">Docs</a>
+          <a href="/docs/getting-started/quick-start/" class="transition hover:text-[var(--color-paper)]"
+            >Quick Start</a
+          >
+          <a
+            href="https://github.com/you/feature-flags"
+            class="rounded border border-[var(--color-line)] px-3 py-1.5 text-[var(--color-paper)] transition hover:border-[var(--color-signal-indigo)]"
+            >GitHub</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <!-- hero -->
+    <section class="mx-auto max-w-6xl px-6 py-20">
+      <div class="grid gap-14 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+        <div>
+          <p class="mb-4 flex items-center gap-2 font-[var(--font-mono)] text-xs uppercase tracking-widest text-[var(--color-muted)]">
+            <span class="h-1.5 w-1.5 rounded-full" style="background: var(--color-signal-teal);"></span>
+            v1 · TypeScript · zero-dep core
+          </p>
+          <h1 class="font-[var(--font-display)] text-5xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl">
+            Feature flags that
+            <span style="color: var(--color-signal-amber);">stay put</span>
+            once you raise them.
+          </h1>
+          <p class="mt-6 max-w-md text-lg leading-relaxed text-[var(--color-muted)]">
+            One evaluation engine. Deterministic bucketing. React, Angular, and
+            SSR adapters that share the same core instead of reimplementing it.
+          </p>
+          <div class="mt-9 flex flex-wrap items-center gap-4">
+            <a
+              href="/docs/getting-started/installation/"
+              class="rounded bg-[var(--color-signal-amber)] px-5 py-3 font-semibold text-[var(--color-ink)] transition hover:brightness-110"
+            >
+              Get started
+            </a>
+            <code class="rounded border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 font-[var(--font-mono)] text-sm text-[var(--color-muted)]">
+              npm install @yourlib/core
+            </code>
+          </div>
+        </div>
+
+        <BucketDemo client:load />
+      </div>
+    </section>
+
+    <!-- flag panel / features -->
+    <section class="border-t border-[var(--color-line)] bg-[var(--color-panel)]/40">
+      <div class="mx-auto max-w-6xl px-6 py-16">
+        <h2 class="font-[var(--font-display)] text-sm uppercase tracking-widest text-[var(--color-muted)]">
+          What's actually different
+        </h2>
+        <div class="mt-8 grid gap-6 sm:grid-cols-2">
+          {
+            flags.map((f) => (
+              <div class="rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-5">
+                <div class="mb-3 flex items-center gap-2 font-[var(--font-mono)] text-xs">
+                  <span
+                    class="rounded-full px-2 py-0.5 font-semibold"
+                    style={
+                      f.state === 'on'
+                        ? 'background: color-mix(in srgb, var(--color-signal-teal) 18%, transparent); color: var(--color-signal-teal);'
+                        : 'background: color-mix(in srgb, var(--color-signal-rose) 18%, transparent); color: var(--color-signal-rose);'
+                    }
+                  >
+                    {f.state === 'on' ? 'true' : 'false'}
+                  </span>
+                  <span class="text-[var(--color-muted)]">by default</span>
+                </div>
+                <h3 class="font-[var(--font-display)] text-lg font-semibold">{f.title}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">{f.body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- adapters -->
+    <section class="mx-auto max-w-6xl px-6 py-16">
+      <h2 class="font-[var(--font-display)] text-sm uppercase tracking-widest text-[var(--color-muted)]">
+        One core, thin adapters
+      </h2>
+      <div class="mt-8 flex flex-wrap gap-4">
+        {
+          adapters.map((a) => (
+            <div class="flex items-center gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-panel)] px-5 py-4">
+              <span class="h-2.5 w-4 rounded-[1px]" style="background: var(--color-signal-indigo);" />
+              <div>
+                <p class="font-[var(--font-display)] font-semibold">{a.name}</p>
+                <p class="font-[var(--font-mono)] text-xs text-[var(--color-muted)]">{a.pkg}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <footer class="border-t border-[var(--color-line)]">
+      <div class="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-6 py-10 text-sm text-[var(--color-muted)] sm:flex-row sm:items-center">
+        <p>YourLib — MIT licensed.</p>
+        <div class="flex gap-6">
+          <a href="/docs/" class="transition hover:text-[var(--color-paper)]">Documentation</a>
+          <a href="https://github.com/you/feature-flags" class="transition hover:text-[var(--color-paper)]">GitHub</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

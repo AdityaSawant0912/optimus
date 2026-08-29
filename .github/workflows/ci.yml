@@ -15,7 +15,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -24,4 +24,36 @@ jobs:
 
       - run: pnpm typecheck
 
+      # packages/angular's tests resolve @feature-flags/core and
+      # @feature-flags/node via a webpack alias to their built dist/
+      # output (Angular's webpack karma builder doesn't transform raw .ts
+      # reached through node_modules) — those two builds must run before
+      # test. Not `pnpm build` (root): packages/angular's own build
+      # (ng-packagr, for the eventual npm-publish path) currently fails —
+      # ng-packagr requires TypeScript >=6.0.0 <6.1.0, a window with no
+      # stable release at all (TS went straight from 5.x to 7.0 stable).
+      # Workspace-internal consumption never needs angular's own dist —
+      # see packages/angular/README.md.
+      - run: pnpm --filter @feature-flags/core --filter @feature-flags/node build
+
       - run: pnpm test
+
+      - run: pnpm --filter @feature-flags/core --filter @feature-flags/node --filter @feature-flags/react --filter @feature-flags/devtools --filter node-ssr-example build
+
+  docs-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: apps/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run build

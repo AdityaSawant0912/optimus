@@ -41,6 +41,26 @@ describe("FeatureFlagsPanelElement", () => {
     element.remove();
   });
 
+  it("renders nothing before a client is set", () => {
+    registerFeatureFlagsPanel();
+    element = document.createElement("feature-flags-panel") as FeatureFlagsPanelElement;
+    document.body.appendChild(element);
+
+    expect(element.client).toBeUndefined();
+    expect(element.innerHTML).toBe("");
+  });
+
+  it("exposes the current client via the getter", async () => {
+    registerFeatureFlagsPanel();
+    element = document.createElement("feature-flags-panel") as FeatureFlagsPanelElement;
+    document.body.appendChild(element);
+
+    const client = await createTestClient();
+    element.client = client;
+
+    expect(element.client).toBe(client);
+  });
+
   it("renders one row per evaluateAll() key when a client is set", async () => {
     registerFeatureFlagsPanel();
     element = document.createElement("feature-flags-panel") as FeatureFlagsPanelElement;
@@ -71,6 +91,26 @@ describe("FeatureFlagsPanelElement", () => {
     applyButton.click();
 
     expect(client.evaluate("flag-b")).toMatchObject({ value: true, reason: "override" });
+  });
+
+  it("Apply keeps a non-JSON value as a raw string", async () => {
+    registerFeatureFlagsPanel();
+    element = document.createElement("feature-flags-panel") as FeatureFlagsPanelElement;
+    document.body.appendChild(element);
+
+    const client = await createTestClient();
+    element.client = client;
+
+    const row = element.querySelector('[data-flag-key="flag-b"]')!;
+    const valueInput = row.querySelector<HTMLInputElement>('[data-role="value-input"]')!;
+    const variantInput = row.querySelector<HTMLInputElement>('[data-role="variant-input"]')!;
+    const applyButton = row.querySelector<HTMLButtonElement>('[data-role="apply-button"]')!;
+
+    valueInput.value = "not-json";
+    variantInput.value = "treatment";
+    applyButton.click();
+
+    expect(client.evaluate("flag-b")).toMatchObject({ value: "not-json", variantKey: "treatment", reason: "override" });
   });
 
   it("Clear calls clearOverrides([key])", async () => {

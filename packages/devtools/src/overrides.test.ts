@@ -1,5 +1,6 @@
-import { describe, expect, it } from "vitest";
-import { resolveOverridesFromEnvironment } from "./overrides";
+import { FlagsClient, LocalProvider } from "@feature-flags/core";
+import { describe, expect, it, vi } from "vitest";
+import { applyOverridesToClient, resolveOverridesFromEnvironment } from "./overrides";
 import type { OverrideSources } from "./overrides";
 
 function locationWith(search: string): OverrideSources["location"] {
@@ -67,5 +68,26 @@ describe("resolveOverridesFromEnvironment", () => {
       globalOverrides: sampleOverrides,
     });
     expect(result).toEqual(sampleOverrides);
+  });
+
+  it("reads from real window.location/localStorage when no sources are supplied", () => {
+    // jsdom provides a real window — this exercises defaultSources()'s
+    // happy path (the `typeof window === "undefined"` SSR branch is not
+    // reachable here without deleting the jsdom global, which is riskier
+    // than the coverage it would buy).
+    expect(() => resolveOverridesFromEnvironment()).not.toThrow();
+    expect(resolveOverridesFromEnvironment()).toEqual({});
+  });
+});
+
+describe("applyOverridesToClient", () => {
+  it("calls client.setOverrides with the given overrides", async () => {
+    const client = new FlagsClient({ definitions: [], provider: new LocalProvider([]) });
+    await client.init();
+    const spy = vi.spyOn(client, "setOverrides");
+
+    applyOverridesToClient(client, sampleOverrides);
+
+    expect(spy).toHaveBeenCalledWith(sampleOverrides);
   });
 });
