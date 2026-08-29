@@ -1,5 +1,7 @@
 # @useoptimus/react
 
+[![npm](https://img.shields.io/npm/v/@useoptimus/react)](https://www.npmjs.com/package/@useoptimus/react)
+
 React adapter: `<FlagProvider>`, `useFlag`, `useVariant`.
 
 ## Install

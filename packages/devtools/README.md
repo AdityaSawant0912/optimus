@@ -1,5 +1,7 @@
 # @useoptimus/devtools
 
+[![npm](https://img.shields.io/npm/v/@useoptimus/devtools)](https://www.npmjs.com/package/@useoptimus/devtools)
+
 Local override resolution and a framework-agnostic debug panel for forcing
 flag values during QA/E2E testing.
 

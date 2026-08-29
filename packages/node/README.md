@@ -1,5 +1,7 @@
 # @useoptimus/node
 
+[![npm](https://img.shields.io/npm/v/@useoptimus/node)](https://www.npmjs.com/package/@useoptimus/node)
+
 SSR + Node helpers: build an `EvaluationContext` from an incoming request,
 and serialize/hydrate an evaluated-flags snapshot for the server-evaluates-
 once, client-hydrates-without-re-evaluating contract.

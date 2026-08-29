@@ -1,5 +1,7 @@
 # @useoptimus/angular
 
+[![npm](https://img.shields.io/npm/v/@useoptimus/angular)](https://www.npmjs.com/package/@useoptimus/angular)
+
 Angular adapter: `FeatureFlagService`, `provideFeatureFlags`, `*ifFeature`.
 
 ## Install

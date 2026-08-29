@@ -1,5 +1,7 @@
 # @useoptimus/core
 
+[![npm](https://img.shields.io/npm/v/@useoptimus/core)](https://www.npmjs.com/package/@useoptimus/core)
+
 Pure, framework-free feature-flag evaluation engine. No React, no Angular,
 no `window`/`localStorage` — this package runs identically in Node, the
 browser, or an edge worker. Framework adapters (`@useoptimus/react`,
