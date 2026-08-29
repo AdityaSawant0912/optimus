@@ -85,8 +85,6 @@ stop** — don't quietly work around it.
 
 ## Commands
 
-> Fill in once tooling is scaffolded (Phase 0). Placeholder for now:
-
 ```bash
 # install
 pnpm install
