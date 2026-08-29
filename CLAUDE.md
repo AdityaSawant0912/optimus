@@ -83,6 +83,19 @@ stop** — don't quietly work around it.
   boundaries — this library's whole value proposition is type safety, don't
   undermine it internally.
 
+## Docs stay in sync with the library
+
+- Any change to a published package (`packages/*`) — new export, changed
+  signature, changed behavior, new option — **must** update the matching
+  reference doc under `apps/src/content/docs/docs/api/` in the same PR/commit
+  set. Don't land a library change and leave docs to a follow-up.
+- Every merge to `main` publishes the library packages and the docs site
+  **together**, as one release unit — not library-then-docs-later or
+  docs-only pushes that drift from what's actually published.
+- If you change `packages/core` (or any adapter) and the corresponding
+  `apps/.../api/*.md` page isn't touched in the same change, stop and either
+  update it or flag explicitly to the user why it doesn't need updating.
+
 ## Commands
 
 ```bash
