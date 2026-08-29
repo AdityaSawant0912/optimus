@@ -1,6 +1,6 @@
 {
   "name": "@useoptimus/angular",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -11,7 +11,7 @@
     "test": "ng test --no-watch --no-progress",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.spec.json",
     "build": "ng-packagr -p ng-package.json",
-    "postbuild": "node -e \"const fs=require('fs');const p='dist/package.json';const j=JSON.parse(fs.readFileSync(p,'utf8'));j.main=j.module;j.types=j.typings;fs.writeFileSync(p,JSON.stringify(j,null,2)+'\\n');\""
+    "postbuild": "node scripts/fix-dist-package.mjs"
   },
   "dependencies": {
     "@useoptimus/core": "workspace:*",
