@@ -1,0 +1,44 @@
+{
+  "name": "@feature-flags/angular",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "test": "ng test --no-watch --no-progress",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.spec.json",
+    "build": "ng-packagr -p ng-package.json"
+  },
+  "dependencies": {
+    "@feature-flags/core": "workspace:*",
+    "@feature-flags/node": "workspace:*"
+  },
+  "peerDependencies": {
+    "@angular/core": "^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0",
+    "@angular/common": "^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0",
+    "rxjs": "^7.8.0"
+  },
+  "devDependencies": {
+    "@angular-builders/custom-webpack": "^22.0.0",
+    "@angular-devkit/build-angular": "^22.0.0",
+    "@angular/cli": "^22.0.0",
+    "@angular/common": "^22.0.0",
+    "@angular/compiler": "^22.0.0",
+    "@angular/compiler-cli": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/platform-browser": "^22.0.0",
+    "@angular/platform-browser-dynamic": "^22.0.0",
+    "@types/jasmine": "^5.1.0",
+    "jasmine-core": "^5.4.0",
+    "karma": "^6.4.0",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-jasmine": "^5.1.0",
+    "karma-jasmine-html-reporter": "^2.1.0",
+    "ng-packagr": "^22.0.0",
+    "puppeteer": "^23.0.0",
+    "rxjs": "^7.8.1",
+    "typescript": "^5.6.3",
+    "zone.js": "^0.15.0"
+  }
+}
