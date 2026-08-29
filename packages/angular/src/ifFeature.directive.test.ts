@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-import type { FlagDefinition } from "@optimus/core";
+import type { FlagDefinition } from "@useoptimus/core";
 import { IfFeatureDirective } from "./ifFeature.directive";
 import { provideFeatureFlags } from "./provideFeatureFlags";
 import { boolFlag, createTestClient } from "./test-utils/setup";

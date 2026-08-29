@@ -1,10 +1,10 @@
 import { Inject, Injectable, Optional } from "@angular/core";
 import { Observable, Subject, defer, merge, of } from "rxjs";
 import { distinctUntilChanged, map, shareReplay } from "rxjs/operators";
-import { FlagsClient } from "@optimus/core";
-import type { EvaluatedFlag, EvaluationContext } from "@optimus/core";
-import { hydrateSnapshot } from "@optimus/node";
-import type { SerializedSnapshot } from "@optimus/node";
+import { FlagsClient } from "@useoptimus/core";
+import type { EvaluatedFlag, EvaluationContext } from "@useoptimus/core";
+import { hydrateSnapshot } from "@useoptimus/node";
+import type { SerializedSnapshot } from "@useoptimus/node";
 import { evaluatedFlagsEqual } from "./equality";
 import { FLAGS_CLIENT, FLAGS_SNAPSHOT } from "./tokens";
 

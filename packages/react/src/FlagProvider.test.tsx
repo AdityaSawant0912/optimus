@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { serializeSnapshot } from "@optimus/node";
+import { serializeSnapshot } from "@useoptimus/node";
 import { FlagProvider } from "./FlagProvider";
 import { useFlag } from "./useFlag";
 import { boolFlag, createTestClient } from "./test-utils/setup";

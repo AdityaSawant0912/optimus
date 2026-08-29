@@ -1,4 +1,4 @@
-import type { EvaluatedFlag } from "@optimus/core";
+import type { EvaluatedFlag } from "@useoptimus/core";
 
 export const SNAPSHOT_VERSION = 1;
 

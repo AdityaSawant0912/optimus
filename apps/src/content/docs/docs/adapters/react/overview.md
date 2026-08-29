@@ -5,12 +5,12 @@ sidebar:
   order: 1
 ---
 
-`@optimus/react` provides `<FlagProvider>`, `useFlag`, and `useVariant`.
+`@useoptimus/react` provides `<FlagProvider>`, `useFlag`, and `useVariant`.
 
 ## Install
 
 ```bash
-npm install @optimus/react
+npm install @useoptimus/react
 ```
 
 Peer dependency: `react@^18.0.0 || ^19.0.0` — the floor is 18 because
@@ -19,7 +19,7 @@ Peer dependency: `react@^18.0.0 || ^19.0.0` — the floor is 18 because
 ## Usage
 
 ```tsx
-import { FlagProvider, useFlag } from "@optimus/react";
+import { FlagProvider, useFlag } from "@useoptimus/react";
 
 function App({ client, snapshot }) {
   return (
@@ -35,7 +35,7 @@ function Banner() {
 }
 ```
 
-`client` is a `FlagsClient` from [`@optimus/core`](/docs/api/core/),
+`client` is a `FlagsClient` from [`@useoptimus/core`](/docs/api/core/),
 constructed and owned entirely by your app — `<FlagProvider>` never calls
 `client.init()`/`client.dispose()`. React StrictMode's double-effect-invoke
 in dev would break a shared client on the second mount if it did, and a
@@ -44,7 +44,7 @@ client is typically one-per-app anyway, not scoped to a component subtree.
 ## Snapshot vs. live mode
 
 Passing `snapshot` (a `SerializedSnapshot` from
-[`@optimus/node`](/docs/adapters/node/overview/)) puts the provider in
+[`@useoptimus/node`](/docs/adapters/node/overview/)) puts the provider in
 **snapshot mode**: `useFlag` reads only from the hydrated snapshot, with
 zero calls to `client.evaluate()`/`evaluateAll()` — the concrete expression
 of the [SSR contract](/docs/adapters/node/overview/): the server evaluates
@@ -76,5 +76,5 @@ bucketing key resolvable). That's a normal state, not a bug.
 ## Testing
 
 ```bash
-pnpm --filter @optimus/react test
+pnpm --filter @useoptimus/react test
 ```

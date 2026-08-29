@@ -1,4 +1,4 @@
-# @optimus/node
+# @useoptimus/node
 
 SSR + Node helpers: build an `EvaluationContext` from an incoming request,
 and serialize/hydrate an evaluated-flags snapshot for the server-evaluates-
@@ -7,7 +7,7 @@ once, client-hydrates-without-re-evaluating contract.
 ## Install
 
 ```bash
-npm install @optimus/node
+npm install @useoptimus/node
 ```
 
 ## `buildContextFromRequest` — zero built-in guessing
@@ -17,10 +17,10 @@ extractor — there's no default header/cookie naming convention. Guessing
 one (e.g. assuming an `x-user-id` header) would be wrong for most real
 apps and would corrupt bucket assignment silently, which is worse than the
 helper doing nothing until configured — the same stance
-`@optimus/core` takes on the bucketing key itself.
+`@useoptimus/core` takes on the bucketing key itself.
 
 ```ts
-import { buildContextFromRequest, getHeader, getCookie } from "@optimus/node";
+import { buildContextFromRequest, getHeader, getCookie } from "@useoptimus/node";
 
 const context = buildContextFromRequest(req, {
   userId: (r) => getHeader(r, "x-user-id"),
@@ -38,7 +38,7 @@ your own extractors.
 ## `serializeSnapshot` / `hydrateSnapshot` — the SSR contract
 
 ```ts
-import { serializeSnapshot, hydrateSnapshot } from "@optimus/node";
+import { serializeSnapshot, hydrateSnapshot } from "@useoptimus/node";
 
 // server:
 const snapshot = serializeSnapshot(client.evaluateAll(context));
@@ -67,7 +67,7 @@ silently hydrating stale-shaped data risks a wrong result with no error.
 ## Testing
 
 ```bash
-pnpm --filter @optimus/node test
+pnpm --filter @useoptimus/node test
 ```
 
 See `examples/node-ssr` for a full server-evaluate-then-client-hydrate

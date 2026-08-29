@@ -1,6 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 import { firstValueFrom } from "rxjs";
-import { serializeSnapshot } from "@optimus/node";
+import { serializeSnapshot } from "@useoptimus/node";
 import { FeatureFlagService } from "./FeatureFlagService";
 import { provideFeatureFlags } from "./provideFeatureFlags";
 import { boolFlag, createTestClient } from "./test-utils/setup";

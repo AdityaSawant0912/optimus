@@ -1,5 +1,5 @@
-import { FlagsClient, LocalProvider } from "@optimus/core";
-import type { FlagDefinition } from "@optimus/core";
+import { FlagsClient, LocalProvider } from "@useoptimus/core";
+import type { FlagDefinition } from "@useoptimus/core";
 import { afterEach, describe, expect, it } from "vitest";
 import { FeatureFlagsPanelElement, registerFeatureFlagsPanel } from "./panel";
 

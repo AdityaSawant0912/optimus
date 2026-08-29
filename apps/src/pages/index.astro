@@ -3,9 +3,9 @@ import BucketDemo from '../components/BucketDemo.tsx';
 import '../styles/global.css';
 
 const adapters = [
-  { name: 'React', pkg: '@optimus/react' },
-  { name: 'Angular', pkg: '@optimus/angular' },
-  { name: 'Node / SSR', pkg: '@optimus/node' },
+  { name: 'React', pkg: '@useoptimus/react' },
+  { name: 'Angular', pkg: '@useoptimus/angular' },
+  { name: 'Node / SSR', pkg: '@useoptimus/node' },
 ];
 
 const flags = [
@@ -27,7 +27,7 @@ const flags = [
   {
     state: 'on' as const,
     title: 'Zero framework deps in core',
-    body: '@optimus/core never imports React, Angular, or window. Run it in a Worker, a Node server, or a browser — same engine, same result.',
+    body: '@useoptimus/core never imports React, Angular, or window. Run it in a Worker, a Node server, or a browser — same engine, same result.',
   },
 ];
 ---
@@ -100,7 +100,7 @@ const flags = [
               Get started
             </a>
             <code class="rounded border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 font-[var(--font-mono)] text-sm text-[var(--color-muted)]">
-              npm install @optimus/core
+              npm install @useoptimus/core
             </code>
           </div>
         </div>

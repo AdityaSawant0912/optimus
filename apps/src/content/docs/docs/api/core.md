@@ -5,7 +5,7 @@ sidebar:
   order: 1
 ---
 
-Hand-written reference for everything `@optimus/core` exports today
+Hand-written reference for everything `@useoptimus/core` exports today
 (`packages/core/src/index.ts`). Generating this from TSDoc via TypeDoc is
 planned — see the docs-site README — but not wired up yet.
 

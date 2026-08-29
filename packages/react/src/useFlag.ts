@@ -1,5 +1,5 @@
 import { useCallback, useRef, useSyncExternalStore } from "react";
-import type { EvaluatedFlag, EvaluationContext } from "@optimus/core";
+import type { EvaluatedFlag, EvaluationContext } from "@useoptimus/core";
 import { useFlagsContext } from "./context";
 
 function evaluatedFlagsEqual<T>(a: EvaluatedFlag<T>, b: EvaluatedFlag<T>): boolean {

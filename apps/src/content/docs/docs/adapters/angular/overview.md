@@ -5,13 +5,13 @@ sidebar:
   order: 1
 ---
 
-`@optimus/angular` provides `FeatureFlagService`, `provideFeatureFlags`, and
+`@useoptimus/angular` provides `FeatureFlagService`, `provideFeatureFlags`, and
 the `*ifFeature` structural directive.
 
 ## Install
 
 ```bash
-npm install @optimus/angular
+npm install @useoptimus/angular
 ```
 
 Peer dependencies: `@angular/core`/`@angular/common@^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0`,
@@ -23,7 +23,7 @@ status in Angular 19.
 
 ```ts
 import { bootstrapApplication } from "@angular/platform-browser";
-import { provideFeatureFlags } from "@optimus/angular";
+import { provideFeatureFlags } from "@useoptimus/angular";
 
 bootstrapApplication(AppComponent, {
   providers: [provideFeatureFlags(client, snapshot)],
@@ -32,7 +32,7 @@ bootstrapApplication(AppComponent, {
 
 ```ts
 import { Component, inject } from "@angular/core";
-import { FeatureFlagService, IfFeatureDirective } from "@optimus/angular";
+import { FeatureFlagService, IfFeatureDirective } from "@useoptimus/angular";
 
 @Component({
   standalone: true,
@@ -68,13 +68,13 @@ double-invoke).
 ## Testing
 
 ```bash
-pnpm --filter @optimus/core build
-pnpm --filter @optimus/node build
-pnpm --filter @optimus/angular test
+pnpm --filter @useoptimus/core build
+pnpm --filter @useoptimus/node build
+pnpm --filter @useoptimus/angular test
 ```
 
 The two `build` steps are required: Angular's Karma test runner resolves
-`@optimus/core`/`@optimus/node` via a webpack alias to their **built**
+`@useoptimus/core`/`@useoptimus/node` via a webpack alias to their **built**
 `dist/` output rather than raw TypeScript, since Angular's stock webpack
 karma builder doesn't transform `.ts` reached through `node_modules`.
 Requires Node `v24.15.0+`/`v22.22.3+`/`v26+` (Angular 22's CLI version gate).

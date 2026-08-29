@@ -1,5 +1,5 @@
-import { FlagsClient, LocalProvider } from "@optimus/core";
-import type { FlagDefinition, FlagRemoteState } from "@optimus/core";
+import { FlagsClient, LocalProvider } from "@useoptimus/core";
+import type { FlagDefinition, FlagRemoteState } from "@useoptimus/core";
 
 export function boolFlag(overrides: Partial<FlagDefinition<boolean>> & { key: string }): FlagDefinition<boolean> {
   return {

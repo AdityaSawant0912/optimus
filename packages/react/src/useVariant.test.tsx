@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { FlagsClient, LocalProvider } from "@optimus/core";
-import type { FlagDefinition } from "@optimus/core";
+import { FlagsClient, LocalProvider } from "@useoptimus/core";
+import type { FlagDefinition } from "@useoptimus/core";
 import { FlagProvider } from "./FlagProvider";
 import { useVariant } from "./useVariant";
 import { boolFlag, createTestClient } from "./test-utils/setup";

@@ -1,4 +1,4 @@
-import { FlagsClient, LocalProvider } from "@optimus/core";
+import { FlagsClient, LocalProvider } from "@useoptimus/core";
 import { describe, expect, it, vi } from "vitest";
 import { applyOverridesToClient, resolveOverridesFromEnvironment } from "./overrides";
 import type { OverrideSources } from "./overrides";

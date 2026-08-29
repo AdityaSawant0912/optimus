@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { EvaluatedFlag, FlagsClient } from "@optimus/core";
+import type { EvaluatedFlag, FlagsClient } from "@useoptimus/core";
 
 export type FlagsContextValue =
   | { mode: "snapshot"; client: FlagsClient; snapshot: Record<string, EvaluatedFlag<unknown>> }

@@ -1,4 +1,4 @@
-import type { FlagOverride, FlagsClient } from "@optimus/core";
+import type { FlagOverride, FlagsClient } from "@useoptimus/core";
 
 const QUERY_PARAM = "__ff_overrides";
 const STORAGE_KEY = "feature-flags:devtools:overrides";

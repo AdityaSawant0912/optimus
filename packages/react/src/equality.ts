@@ -1,4 +1,4 @@
-import type { EvaluationContext } from "@optimus/core";
+import type { EvaluationContext } from "@useoptimus/core";
 
 function attributesEqual(
   a: EvaluationContext["attributes"],

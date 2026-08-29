@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { ReactElement, ReactNode } from "react";
-import type { EvaluationContext, FlagsClient } from "@optimus/core";
-import { hydrateSnapshot } from "@optimus/node";
-import type { SerializedSnapshot } from "@optimus/node";
+import type { EvaluationContext, FlagsClient } from "@useoptimus/core";
+import { hydrateSnapshot } from "@useoptimus/node";
+import type { SerializedSnapshot } from "@useoptimus/node";
 import { FlagsContext, type FlagsContextValue } from "./context";
 import { evaluationContextsEqual } from "./equality";
 

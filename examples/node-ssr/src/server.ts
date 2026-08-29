@@ -1,8 +1,8 @@
 import { createServer as createHttpServer } from "node:http";
 import type { IncomingMessage, Server, ServerResponse } from "node:http";
-import { FlagsClient } from "@optimus/core";
-import { buildContextFromRequest, getCookie, getHeader, serializeSnapshot } from "@optimus/node";
-import type { BuildContextFromRequestOptions } from "@optimus/node";
+import { FlagsClient } from "@useoptimus/core";
+import { buildContextFromRequest, getCookie, getHeader, serializeSnapshot } from "@useoptimus/node";
+import type { BuildContextFromRequestOptions } from "@useoptimus/node";
 import { definitions, provider } from "./flags";
 
 /**

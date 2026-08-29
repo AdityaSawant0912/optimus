@@ -6,7 +6,7 @@ sidebar:
 ---
 
 Percentage rollouts and A/B variant assignment both go through the same
-bucketing primitives in `@optimus/core`.
+bucketing primitives in `@useoptimus/core`.
 
 ## Resolving the bucketing key
 

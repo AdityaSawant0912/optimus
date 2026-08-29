@@ -66,13 +66,13 @@ bookkeeping/tooling, not something `evaluate()` branches on itself.
 
 ## Kind-sugar factories
 
-`@optimus/core` ships 8 factory functions — `defineKillSwitch`,
+`@useoptimus/core` ships 8 factory functions — `defineKillSwitch`,
 `defineExperiment`, and others — that pre-fill trait defaults for a given
 `kind` over the same `FlagDefinition` shape, rather than a separate
 evaluation code path per kind:
 
 ```ts
-import { defineKillSwitch, defineExperiment } from '@optimus/core';
+import { defineKillSwitch, defineExperiment } from '@useoptimus/core';
 
 const maintenanceMode = defineKillSwitch({ key: 'maintenance-mode', defaultValue: false });
 ```

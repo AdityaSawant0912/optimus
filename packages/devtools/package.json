@@ -1,10 +1,10 @@
 {
-  "name": "@optimus/devtools",
+  "name": "@useoptimus/devtools",
   "version": "0.1.0",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
-  "files": ["dist"],
+  "files": ["dist", "!dist/*.tsbuildinfo"],
   "publishConfig": {
     "access": "public",
     "main": "./dist/index.js",
@@ -17,7 +17,7 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "@optimus/core": "workspace:*"
+    "@useoptimus/core": "workspace:*"
   },
   "devDependencies": {
     "jsdom": "^25.0.1",

@@ -8,10 +8,10 @@ sidebar:
 ## Install core
 
 ```bash
-npm install @optimus/core
+npm install @useoptimus/core
 ```
 
-`@optimus/core` is a pure TypeScript evaluation engine with zero framework
+`@useoptimus/core` is a pure TypeScript evaluation engine with zero framework
 dependencies. It runs identically in Node, the browser, and any SSR
 environment, and is the only required package — every adapter below is a
 thin layer on top of it.
@@ -21,15 +21,15 @@ thin layer on top of it.
 Install the adapter that matches your framework alongside core:
 
 ```bash
-npm install @optimus/react     # React — <FlagProvider>, useFlag, useVariant
-npm install @optimus/angular   # Angular — FeatureFlagService, *ifFeature
-npm install @optimus/node      # Node / SSR — request context + snapshot hydration
+npm install @useoptimus/react     # React — <FlagProvider>, useFlag, useVariant
+npm install @useoptimus/angular   # Angular — FeatureFlagService, *ifFeature
+npm install @useoptimus/node      # Node / SSR — request context + snapshot hydration
 ```
 
 ## DevTools (optional)
 
 ```bash
-npm install @optimus/devtools --save-dev
+npm install @useoptimus/devtools --save-dev
 ```
 
 Local override resolution (query param / `localStorage` / injected global)

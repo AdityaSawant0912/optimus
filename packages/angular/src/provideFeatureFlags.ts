@@ -1,7 +1,7 @@
 import type { EnvironmentProviders } from "@angular/core";
 import { makeEnvironmentProviders } from "@angular/core";
-import type { FlagsClient } from "@optimus/core";
-import type { SerializedSnapshot } from "@optimus/node";
+import type { FlagsClient } from "@useoptimus/core";
+import type { SerializedSnapshot } from "@useoptimus/node";
 import { FeatureFlagService } from "./FeatureFlagService";
 import { FLAGS_CLIENT, FLAGS_SNAPSHOT } from "./tokens";
 

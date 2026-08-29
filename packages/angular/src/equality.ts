@@ -1,4 +1,4 @@
-import type { EvaluatedFlag } from "@optimus/core";
+import type { EvaluatedFlag } from "@useoptimus/core";
 
 export function evaluatedFlagsEqual<T>(a: EvaluatedFlag<T>, b: EvaluatedFlag<T>): boolean {
   return (

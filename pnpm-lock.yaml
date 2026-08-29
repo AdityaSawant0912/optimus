@@ -26,10 +26,10 @@ importers:
 
   examples/node-ssr:
     dependencies:
-      '@optimus/core':
+      '@useoptimus/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@optimus/node':
+      '@useoptimus/node':
         specifier: workspace:*
         version: link:../../packages/node
     devDependencies:
@@ -45,10 +45,10 @@ importers:
 
   packages/angular:
     dependencies:
-      '@optimus/core':
+      '@useoptimus/core':
         specifier: workspace:*
         version: link:../core
-      '@optimus/node':
+      '@useoptimus/node':
         specifier: workspace:*
         version: link:../node
     devDependencies:
@@ -134,7 +134,7 @@ importers:
 
   packages/devtools:
     dependencies:
-      '@optimus/core':
+      '@useoptimus/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -153,7 +153,7 @@ importers:
 
   packages/node:
     dependencies:
-      '@optimus/core':
+      '@useoptimus/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -172,10 +172,10 @@ importers:
 
   packages/react:
     dependencies:
-      '@optimus/core':
+      '@useoptimus/core':
         specifier: workspace:*
         version: link:../core
-      '@optimus/node':
+      '@useoptimus/node':
         specifier: workspace:*
         version: link:../node
     devDependencies:

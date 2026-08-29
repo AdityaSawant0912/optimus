@@ -24,8 +24,8 @@ jobs:
 
       - run: pnpm typecheck
 
-      # packages/angular's tests resolve @optimus/core and
-      # @optimus/node via a webpack alias to their built dist/
+      # packages/angular's tests resolve @useoptimus/core and
+      # @useoptimus/node via a webpack alias to their built dist/
       # output (Angular's webpack karma builder doesn't transform raw .ts
       # reached through node_modules) — those two builds must run before
       # test. Not `pnpm build` (root): packages/angular's own build
@@ -34,11 +34,11 @@ jobs:
       # stable release at all (TS went straight from 5.x to 7.0 stable).
       # Workspace-internal consumption never needs angular's own dist —
       # see packages/angular/README.md.
-      - run: pnpm --filter @optimus/core --filter @optimus/node build
+      - run: pnpm --filter @useoptimus/core --filter @useoptimus/node build
 
       - run: pnpm test
 
-      - run: pnpm --filter @optimus/core --filter @optimus/node --filter @optimus/react --filter @optimus/devtools --filter node-ssr-example build
+      - run: pnpm --filter @useoptimus/core --filter @useoptimus/node --filter @useoptimus/react --filter @useoptimus/devtools --filter node-ssr-example build
 
   docs-build:
     runs-on: ubuntu-latest
