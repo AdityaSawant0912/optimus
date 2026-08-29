@@ -25,7 +25,11 @@ describe("FeatureFlagService — setContext", () => {
     await client.init();
     // Snapshot built for plan:"free" — doesn't match the targeting rule.
     const snapshot = serializeSnapshot(client.evaluateAll({ attributes: { plan: "free" } }));
-    const setContextSpy = spyOn(client, "setContext");
+    // Jasmine's spyOn does not call through by default (unlike vitest's
+    // vi.spyOn) — without callThrough the client's context never actually
+    // updates, so the "live" re-evaluation below would silently use the
+    // stale default context instead of the new one.
+    const setContextSpy = spyOn(client, "setContext").and.callThrough();
 
     TestBed.configureTestingModule({ providers: [provideFeatureFlags(client, snapshot)] });
     const service = TestBed.inject(FeatureFlagService);
