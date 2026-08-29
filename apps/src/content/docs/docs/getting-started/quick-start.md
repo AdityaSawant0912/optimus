@@ -100,9 +100,10 @@ client.evaluateAll({ userId: 'user_123' });
 `FlagsClient` also owns `failureMode` semantics (`closed`/`open`/
 `lastKnown`), `subscribe()` for live-update notification, and
 `setOverrides()`/`clearOverrides()` for forcing a flag's value regardless of
-everything else. `HttpPollingProvider` and `SseProvider` (also exported from
-`@useoptimus/core`) fetch remote state over the network instead of
-`LocalProvider`'s static array.
+everything else. For real network traffic, swap `LocalProvider` for
+`HttpPollingProvider` or `SseProvider` (both exported from
+`@useoptimus/core`) — see [State Providers](/docs/concepts/state-providers/)
+for worked examples of each, including failure handling and caching.
 
 ## Kind-sugar factories
 
@@ -126,8 +127,12 @@ const checkoutExperiment = defineExperiment({
 
 ## Next
 
+- [State Providers](/docs/concepts/state-providers/) — wire up
+  `HttpPollingProvider`/`SseProvider` for real remote flag state.
 - [Bucketing & Salting](/docs/concepts/bucketing/) — how percentage rollouts
   and A/B variants are assigned.
+- [Targeting Rules](/docs/concepts/targeting-rules/) — attribute/percentage/
+  semver/date conditions and how the rule list is evaluated.
 - Pick your framework's adapter: [React](/docs/adapters/react/overview/),
   [Angular](/docs/adapters/angular/overview/), or
   [Node / SSR](/docs/adapters/node/overview/).
