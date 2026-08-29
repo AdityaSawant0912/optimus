@@ -92,7 +92,10 @@ interface EvaluationContext {
 ```
 
 See [Bucketing & Salting](/docs/concepts/bucketing/) for how `bucketingKey`
-is resolved.
+is resolved. Identity aliasing (anonymous → identified re-bucketing) is out
+of scope for v1 — if the resolved key changes between calls for what is
+conceptually "the same user" (e.g. pre- and post-login), bucket assignment
+may change.
 
 ### `EvaluatedFlag<T>`
 
@@ -281,6 +284,8 @@ interface HttpPollingProviderOptions {
   intervalMs?: number; // steady-state poll interval, default 30_000
   fetchImpl?: FetchLike;
   headers?: Record<string, string>;
+  now?: () => number; // test seam
+  random?: () => number; // jitter test seam, default Math.random
 }
 
 class HttpPollingProvider implements FlagProvider {
@@ -328,6 +333,7 @@ interface FlagsClientOptions {
   context?: EvaluationContext;
   cache?: FlagStateCache; // defaults to an in-memory Map; see TtlFlagStateCache below
   onEvaluate?: OnEvaluateHandler;
+  now?: () => number; // clock seam for tests, default Date.now
 }
 
 class FlagsClient {
@@ -345,6 +351,42 @@ class FlagsClient {
   dispose(): void;
 }
 ```
+
+### Supporting types
+
+```ts
+type Unsubscribe = () => void;
+
+type OnEvaluateHandler = (evaluated: EvaluatedFlag, definition: FlagDefinition<unknown>) => void;
+
+type ClientUpdateListener = (changedKeys: string[]) => void;
+
+interface FlagOverride {
+  value: unknown;
+  variantKey?: string;
+}
+
+interface RefreshResult {
+  succeededKeys: string[];
+  failedKeys: string[];
+  errors: Record<string, unknown>;
+}
+
+interface FlagStateEntry {
+  remoteState: FlagRemoteState | undefined; // last state successfully returned for this key
+  fetchedAt: number | undefined; // epoch ms of last successful fetch; undefined = never fetched
+  lastError: unknown | undefined; // set if the most recent fetch attempt failed
+}
+
+interface FlagStateCache {
+  get(key: string): FlagStateEntry | undefined;
+  set(key: string, entry: FlagStateEntry): void;
+}
+```
+
+`FlagStateCache` is the pluggable storage abstraction behind
+`FlagsClientOptions.cache` — `TtlFlagStateCache` (below) is the built-in
+implementation; a plain `Map`-backed one is used by default.
 
 `evaluate`/`evaluateAll` are synchronous cache reads — they never call the
 provider, so a broken provider can only degrade individual flags (via
@@ -370,28 +412,62 @@ interface TtlFlagStateCacheOptions {
   ttlMs?: number; // default 30_000
   staleWhileRevalidateMs?: number; // default 300_000
   retriggerCooldownMs?: number; // default = ttlMs
+  now?: () => number; // clock seam for tests
   onStale?: (key: string) => void;
 }
 
 class TtlFlagStateCache implements FlagStateCache {
   constructor(options?: TtlFlagStateCacheOptions);
+  get(key: string): FlagStateEntry | undefined;
+  set(key: string, entry: FlagStateEntry): void;
   isStale(key: string): boolean;
   getStaleness(key: string): CacheStaleness; // "fresh" | "stale" | "unknown"
+  setOnStale(handler: ((key: string) => void) | undefined): void;
 }
 
-function wireAutoRevalidation(cache: TtlFlagStateCache, client: FlagsClient): Unsubscribe;
+function wireAutoRevalidation(
+  cache: TtlFlagStateCache,
+  client: Pick<FlagsClient, "refresh">,
+): Unsubscribe;
 ```
 
 `get()`/`set()` are pure passthroughs on top of the default in-memory
 cache — TTL age never changes what's returned or evicts data; the only
 effect is the `onStale` side-channel. `wireAutoRevalidation` wires that
-side-channel to call `client.refresh([key])` automatically. Pass an
-instance as `FlagsClientOptions.cache`.
+side-channel to call `client.refresh([...keys])` automatically, batching
+every key that goes stale in the same tick into one call. It only needs a
+`refresh()` method, not a full `FlagsClient` — pass an instance as
+`FlagsClientOptions.cache`.
 
 ## Kind-sugar factories
 
 Eight factory functions, each a pre-filled trait bundle over the same
 `FlagDefinition` shape — not a separate evaluation path per "kind":
+
+```ts
+interface CommonFlagOptions {
+  schedule?: { startAt?: string; endAt?: string };
+  description?: string;
+  owners?: string[];
+  dependsOn?: string[];
+}
+
+interface DefineBooleanFlagOptions extends CommonFlagOptions {
+  key: string;
+  defaultValue: boolean;
+}
+
+interface DefineExperimentOptions<T> extends CommonFlagOptions {
+  key: string;
+  defaultValue: T; // fallback used by evaluate() when no bucketing key resolves
+  variants: FlagVariant<T>[];
+}
+
+interface DefineDynamicConfigOptions<T> extends CommonFlagOptions {
+  key: string;
+  defaultValue: T;
+}
+```
 
 ```ts
 function defineReleaseFlag(options: DefineBooleanFlagOptions): FlagDefinition<boolean>;
