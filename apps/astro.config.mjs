@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://optimus.dev', // TODO: replace with real domain before deploying
+  site: 'https://optimus.adityasawant.dev', // TODO: replace with real domain before deploying
   integrations: [
     starlight({
       title: 'Optimus',
