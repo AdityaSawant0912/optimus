@@ -18,19 +18,41 @@ pnpm install
 
 ## Making a change
 
-1. Work phase-by-phase per `PLAN.md` §11 — don't start a later phase's
-   package before an earlier one is done and tested.
-2. Write tests alongside the code, not after (`*.test.ts` next to the
-   module it covers, run via vitest).
-3. Before opening a PR:
+Start from an up-to-date `main` and branch from there (`git checkout main
+&& git pull && git checkout -b fix/…` / `feat/…`) — don't stack unrelated
+work on top of a previous feature branch, its commits will drag along until
+that branch merges.
+
+1. Check `PLAN.md` §11 for what phase the repo is currently in — don't
+   start a later phase's package before an earlier one is done and tested.
+2. Write the code, and write tests alongside it, not after (`*.test.ts`
+   next to the module it covers, run via vitest). If you found a bug,
+   write the test that exercises the exact broken case first — the fix
+   that makes it pass is usually obvious once the test names the failure.
+3. If your change touches a published package's (`packages/*`) exported
+   behavior, signature, or options — update the matching reference doc
+   under `apps/src/content/docs/docs/api/*.md` in the same change. Also
+   grep `apps/src/content/docs` for any narrative/concept page
+   (`docs/concepts/*.md`, `docs/getting-started/*.md`) that shows a code
+   example of what you touched — the API reference documents the shape,
+   the concept pages document *usage*, and a stale example there is just
+   as misleading as a stale type signature.
+4. If your change touches a published package's behavior or public API,
+   add a changeset (see [Releasing](#releasing)) — check
+   [`VERSIONING.md`](./VERSIONING.md) for the bump type, including its
+   "runtime behavior change without a type change still counts as
+   breaking" rule.
+5. Before opening a PR, run what CI runs:
    ```bash
    pnpm lint
    pnpm typecheck
    pnpm test
+   pnpm build
    ```
-4. If your change touches a published package's behavior or public API, add
-   a changeset (see below), and check [`VERSIONING.md`](./VERSIONING.md)
-   for whether it counts as breaking.
+6. Open the PR against `main` with a **Summary** (what changed and why —
+   the *why* especially, since the diff already shows the *what*) and a
+   **Test plan** (commands you ran and their result — "should work" isn't
+   a test plan).
 
 ## Adding a new `FlagProvider`
 
