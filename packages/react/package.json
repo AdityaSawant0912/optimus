@@ -2,6 +2,11 @@
   "name": "@useoptimus/react",
   "version": "0.1.1",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdityaSawant0912/optimus.git",
+    "directory": "packages/react"
+  },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "files": ["dist", "!dist/*.tsbuildinfo"],
