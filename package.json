@@ -7,7 +7,8 @@
     "test": "pnpm -r run test",
     "typecheck": "pnpm -r run typecheck",
     "lint": "eslint .",
-    "build": "pnpm -r run build"
+    "build": "pnpm -r run build",
+    "release": "changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.1",
