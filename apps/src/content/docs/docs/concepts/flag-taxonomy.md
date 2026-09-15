@@ -94,6 +94,11 @@ import { defineKillSwitch } from '@useoptimus/core';
 const maintenanceMode = defineKillSwitch({ key: 'maintenance-mode', defaultValue: false });
 ```
 
+Flip it via remote state's `enabled` field — `enabled: true`/`enabled: false`
+force the flag to that literal value regardless of `defaultValue`, so this
+works the same whether the flag ships on-by-default or off-by-default. See
+[`FlagRemoteState`](/docs/api/core/#flagremotestate) for the full semantics.
+
 ### `defineExperiment`
 
 Variant-shaped, sticky, emits exposure events for analytics:
@@ -157,6 +162,10 @@ import { defineCircuitBreaker } from '@useoptimus/core';
 
 const disableThirdPartyEnrichment = defineCircuitBreaker({ key: 'disable-third-party-enrichment', defaultValue: false });
 ```
+
+Same `enabled: true`/`enabled: false` remote override as `defineKillSwitch`
+above — a monitoring system flips this by writing `enabled`, not
+`valueOverride`.
 
 ### `defineDynamicConfig`
 
