@@ -12,6 +12,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
 
@@ -22,6 +23,8 @@ jobs:
           node-version: 24
           cache: pnpm
 
+      - run: npm install -g npm@latest # trusted publishing needs npm >=11.5.1
+
       - run: pnpm install --frozen-lockfile
 
       - run: pnpm build
@@ -31,4 +34,3 @@ jobs:
           publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
