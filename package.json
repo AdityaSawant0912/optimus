@@ -3,6 +3,10 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.24.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdityaSawant0912/optimus.git"
+  },
   "scripts": {
     "test": "pnpm -r run test",
     "typecheck": "pnpm -r run typecheck",

@@ -2,6 +2,11 @@
   "name": "@useoptimus/angular",
   "version": "0.1.2",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdityaSawant0912/optimus.git",
+    "directory": "packages/angular"
+  },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "publishConfig": {
