@@ -27,6 +27,11 @@ const experiment: FlagDefinition<string> = {
   emitsExposure: true,
 };
 
+const killSwitchDefaultOn: FlagDefinition<boolean> = {
+  ...killSwitch,
+  defaultValue: true,
+};
+
 const dependentFlag: FlagDefinition<boolean> = {
   key: "child-feature",
   kind: "release",
@@ -67,6 +72,28 @@ describe("evaluate — boolean flags", () => {
     const off: FlagRemoteState = { key: "kill-switch", rolloutPercentage: 0, updatedAt: "now" };
     expect(evaluate(killSwitch, on, { userId: "u1" }).value).toBe(true);
     expect(evaluate(killSwitch, off, { userId: "u1" }).value).toBe(false);
+  });
+
+  it("enabled: false forces literal false even when defaultValue is true", () => {
+    const remoteState: FlagRemoteState = { key: "kill-switch", enabled: false, updatedAt: "now" };
+    const result = evaluate(killSwitchDefaultOn, remoteState, { userId: "u1" });
+    expect(result).toEqual({ key: "kill-switch", value: false, reason: "override", stale: false, variantKey: undefined });
+  });
+
+  it("enabled: false beats rolloutPercentage: 100 even when defaultValue is true", () => {
+    const remoteState: FlagRemoteState = {
+      key: "kill-switch",
+      enabled: false,
+      rolloutPercentage: 100,
+      updatedAt: "now",
+    };
+    const result = evaluate(killSwitchDefaultOn, remoteState, { userId: "u1" });
+    expect(result.value).toBe(false);
+  });
+
+  it("defaults open with no remote state when defaultValue is true", () => {
+    const result = evaluate(killSwitchDefaultOn, undefined, { userId: "u1" });
+    expect(result).toEqual({ key: "kill-switch", value: true, reason: "default", stale: false, variantKey: undefined });
   });
 });
 
