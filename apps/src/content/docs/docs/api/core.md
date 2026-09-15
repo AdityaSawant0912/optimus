@@ -77,6 +77,16 @@ The live/remote half of a flag. Any field left unset falls back to the
 `FlagDefinition`'s code-defined default — this fallback is the kill-switch
 fail-safe path.
 
+For `valueType: "boolean"` flags, `enabled` is a real bidirectional
+override: `enabled: true` forces the flag to `true`, `enabled: false` forces
+it to `false` (not to `defaultValue`), and omitting `enabled` leaves
+rollout/targeting/`defaultValue` in control. An explicit `enabled: false`
+always wins over `rolloutPercentage`/`targetingRules`. This is what makes
+`defineKillSwitch`/`defineCircuitBreaker` usable as a real remote off-switch
+regardless of whether `defaultValue` is `true` or `false`. For `variant`/
+`value` flags, `enabled: false` instead falls back to `defaultValue` — use
+`valueOverride`/`variantOverrides` for explicit control on those types.
+
 ### `EvaluationContext`
 
 ```ts

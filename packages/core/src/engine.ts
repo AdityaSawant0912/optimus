@@ -52,7 +52,14 @@ export function evaluate<T>(
   }
 
   if (resolved.enabled === false) {
-    return ok(definition.key, definition.defaultValue, "override");
+    // Boolean flags get a real off-switch: force the literal `false`, not
+    // `defaultValue` — otherwise `enabled: false` is a no-op whenever
+    // `defaultValue: true` (breaks defineKillSwitch/defineCircuitBreaker).
+    // variant/value flags have no such literal off state; they fall back to
+    // defaultValue as before, with valueOverride/variantOverrides handling
+    // explicit control for those types.
+    const value = definition.valueType === "boolean" ? (false as T) : definition.defaultValue;
+    return ok(definition.key, value, "override");
   }
 
   const bucketingKey = resolveBucketingKey(context);
